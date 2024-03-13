@@ -26,10 +26,41 @@ services:
       POSTGRES_USER: "andaks"
       POSTGRES_PASSWORD: "AAAbbb123"
     volumes:
-      - /.andaks/pg_backup:/var/lib/postgresql/data
+      - /.andaks/docker/postgresql/pg_data:/var/lib/postgresql/data
+      - /.andaks/docker/postgresql/pg_backup:/var/lib/postgresql
     ports:
       - "5432:5432"
 ```
+
+```BASH
+# ll /.andaks/docker/postgresql/pg_data/
+total 124
+drwx------ 6 logstash systemd-journal  4096 Mar 13 20:01 base
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:01 global
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_commit_ts
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_dynshmem
+-rw------- 1 logstash systemd-journal  4782 Mar 13 20:01 pg_hba.conf
+-rw------- 1 logstash systemd-journal  1636 Mar 13 20:00 pg_ident.conf
+drwx------ 4 logstash systemd-journal  4096 Mar 13 20:01 pg_logical
+drwx------ 4 logstash systemd-journal  4096 Mar 13 20:00 pg_multixact
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:01 pg_notify
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_replslot
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_serial
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_snapshots
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:01 pg_stat
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:01 pg_stat_tmp
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_subtrans
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_tblspc
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_twophase
+-rw------- 1 logstash systemd-journal     3 Mar 13 20:00 PG_VERSION
+drwx------ 3 logstash systemd-journal  4096 Mar 13 20:00 pg_wal
+drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_xact
+-rw------- 1 logstash systemd-journal    88 Mar 13 20:00 postgresql.auto.conf
+-rw------- 1 logstash systemd-journal 26810 Mar 13 20:00 postgresql.conf
+-rw------- 1 logstash systemd-journal    36 Mar 13 20:01 postmaster.opts
+-rw------- 1 logstash systemd-journal    94 Mar 13 20:01 postmaster.pid
+```
+
 
 ## Задача 2
 
