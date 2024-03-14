@@ -110,6 +110,67 @@ andaks=# \l
 (5 rows)
 ```
 
+- Описание таблиц:
+```SQL
+test_db=# \dt+
+                                    List of relations
+ Schema |  Name   | Type  | Owner  | Persistence | Access method |  Size   | Description 
+--------+---------+-------+--------+-------------+---------------+---------+-------------
+ public | clients | table | andaks | permanent   | heap          | 0 bytes | 
+ public | orders  | table | andaks | permanent   | heap          | 0 bytes | 
+(2 rows)
+```
+
+```SQL
+test_db=# \d orders;
+                                    Table "public.orders"
+ Column |          Type          | Collation | Nullable |              Default               
+--------+------------------------+-----------+----------+------------------------------------
+ id     | integer                |           | not null | nextval('orders_id_seq'::regclass)
+ name   | character varying(100) |           |          | 
+ price  | integer                |           |          | 
+Indexes:
+    "orders_pkey" PRIMARY KEY, btree (id)
+
+
+test_db=# \d clients;
+                                      Table "public.clients"
+   Column   |          Type          | Collation | Nullable |               Default               
+------------+------------------------+-----------+----------+-------------------------------------
+ id         | integer                |           | not null | nextval('clients_id_seq'::regclass)
+ surname    | character varying(100) |           |          | 
+ country    | character varying(25)  |           |          | 
+ order_name | character varying(100) |           |          | 
+Indexes:
+    "clients_pkey" PRIMARY KEY, btree (id)
+    "clients_country_idx" btree (country)
+```
+
+- список пользователей с правами над таблицами БД test_db:
+```SQL
+test_db=# select table_catalog, table_schema, table_name, privilege_type, grantee from information_schema.table_privileges where table_name='orders';
+ table_catalog | table_schema | table_name | privilege_type |     grantee      
+---------------+--------------+------------+----------------+------------------
+ test_db       | public       | orders     | INSERT         | andaks
+ test_db       | public       | orders     | SELECT         | andaks
+ test_db       | public       | orders     | UPDATE         | andaks
+ test_db       | public       | orders     | DELETE         | andaks
+ test_db       | public       | orders     | TRUNCATE       | andaks
+ test_db       | public       | orders     | REFERENCES     | andaks
+ test_db       | public       | orders     | TRIGGER        | andaks
+ test_db       | public       | orders     | INSERT         | test-admin-user
+ test_db       | public       | orders     | SELECT         | test-admin-user
+ test_db       | public       | orders     | UPDATE         | test-admin-user
+ test_db       | public       | orders     | DELETE         | test-admin-user
+ test_db       | public       | orders     | TRUNCATE       | test-admin-user
+ test_db       | public       | orders     | REFERENCES     | test-admin-user
+ test_db       | public       | orders     | TRIGGER        | test-admin-user
+ test_db       | public       | orders     | INSERT         | test-simple-user
+ test_db       | public       | orders     | SELECT         | test-simple-user
+ test_db       | public       | orders     | UPDATE         | test-simple-user
+ test_db       | public       | orders     | DELETE         | test-simple-user
+(18 rows)
+```
 
 ## Задача 3
 
