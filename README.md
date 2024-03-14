@@ -148,7 +148,7 @@ Indexes:
 
 - список пользователей с правами над таблицами БД test_db:
 ```SQL
-test_db=# select table_catalog, table_schema, table_name, privilege_type, grantee from information_schema.table_privileges where table_name='orders';
+test_db=# select table_catalog, table_schema, table_name, privilege_type, grantee from information_schema.table_privileges where table_name='orders' or table_name='clients';
  table_catalog | table_schema | table_name | privilege_type |     grantee      
 ---------------+--------------+------------+----------------+------------------
  test_db       | public       | orders     | INSERT         | andaks
@@ -169,7 +169,26 @@ test_db=# select table_catalog, table_schema, table_name, privilege_type, grante
  test_db       | public       | orders     | SELECT         | test-simple-user
  test_db       | public       | orders     | UPDATE         | test-simple-user
  test_db       | public       | orders     | DELETE         | test-simple-user
-(18 rows)
+ test_db       | public       | clients    | INSERT         | andaks
+ test_db       | public       | clients    | SELECT         | andaks
+ test_db       | public       | clients    | UPDATE         | andaks
+ test_db       | public       | clients    | DELETE         | andaks
+ test_db       | public       | clients    | TRUNCATE       | andaks
+ test_db       | public       | clients    | REFERENCES     | andaks
+ test_db       | public       | clients    | TRIGGER        | andaks
+ test_db       | public       | clients    | INSERT         | test-admin-user
+ test_db       | public       | clients    | SELECT         | test-admin-user
+ test_db       | public       | clients    | UPDATE         | test-admin-user
+ test_db       | public       | clients    | DELETE         | test-admin-user
+ test_db       | public       | clients    | TRUNCATE       | test-admin-user
+ test_db       | public       | clients    | REFERENCES     | test-admin-user
+ test_db       | public       | clients    | TRIGGER        | test-admin-user
+ test_db       | public       | clients    | INSERT         | test-simple-user
+ test_db       | public       | clients    | SELECT         | test-simple-user
+ test_db       | public       | clients    | UPDATE         | test-simple-user
+ test_db       | public       | clients    | DELETE         | test-simple-user
+(36 rows)
+
 ```
 
 ## Задача 3
