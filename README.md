@@ -313,6 +313,25 @@ test_db=# select clients.surname, orders.name from clients join orders on orders
 
 Приведите получившийся результат и объясните, что значат полученные значения.
 
+#### Ответ на задание 5.
+
+- Запрос через EXPLAIN:
+```SQL
+test_db=# explain select clients.surname, orders.name from clients join orders on orders.id=clients.order_id;
+                             QUERY PLAN                              
+---------------------------------------------------------------------
+ Hash Join  (cost=1.11..15.56 rows=5 width=436)
+   Hash Cond: (orders.id = clients.order_id)
+   ->  Seq Scan on orders  (cost=0.00..13.20 rows=320 width=222)
+   ->  Hash  (cost=1.05..1.05 rows=5 width=222)
+         ->  Seq Scan on clients  (cost=0.00..1.05 rows=5 width=222)
+(5 rows)
+```
+
+По сути EXPLAIN это планировщик запросов. Он показывает каким именно образом будет выполняться сам запрос, дает оценку его производительности (показатели параметра cost) и обозначает другие параметры. Например: rows - приблизительно возвращаемое количество строк; width - средний размер одной строки в байтах.
+Если вы используете индексы, EXPLAIN может показать вам их использование. Вы будете лучше представлять анатомию запроса.
+У EXPLAIN есть параметр ANALYZE, который наряду с планом запроса покажет статистику уже реального его выполнения.
+
 ## Задача 6
 
 Создайте бэкап БД test_db и поместите его в volume, предназначенный для бэкапов (см. задачу 1).
@@ -324,6 +343,26 @@ test_db=# select clients.surname, orders.name from clients join orders on orders
 Восстановите БД test_db в новом контейнере.
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
+
+#### Ответ на задание 6.
+
+- Список команд, которые я применял для резервного копирования и восстановления БД:
+```SQL
+# Резервируем базу данных:
+root@debian-andaks:/home/andaks# pg_dump -U andaks -W -h 127.0.0.1 -p 5432 > test_db /.andaks/docker/postgresql/pg_backup/
+
+останавливаем докер компос и поднимаем чистый контейнер с простгресом:
+# docker-compose down
+# docker run --rm --name pgdocker -e POSTGRES_PASSWORD=AAAbbb123 -e POSTGRES_USER=andaks -d -p 5432:5432 -v /.andaks/docker/postgresql/pg_backup/:/var/lib/postgresql/ postgres:12
+
+Заливаем дамп базы в чистый контейнер. Предварительно пришлось создать БД:
+andaks=# create database test_db;
+CREATE DATABASE
+andaks=# q
+andaks-# \q
+
+# psql -h 127.0.0.1 -U andaks -W -d test_db < /.andaks/docker/postgresql/pg_backup/test_db_dump
+```
 
 ---
 
