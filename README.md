@@ -134,16 +134,18 @@ Indexes:
 
 
 test_db=# \d clients;
-                                      Table "public.clients"
-   Column   |          Type          | Collation | Nullable |               Default               
-------------+------------------------+-----------+----------+-------------------------------------
- id         | integer                |           | not null | nextval('clients_id_seq'::regclass)
- surname    | character varying(100) |           |          | 
- country    | character varying(25)  |           |          | 
- order_name | character varying(100) |           |          | 
+                                     Table "public.clients"
+  Column  |          Type          | Collation | Nullable |               Default               
+----------+------------------------+-----------+----------+-------------------------------------
+ id       | integer                |           | not null | nextval('clients_id_seq'::regclass)
+ surname  | character varying(100) |           |          | 
+ country  | character varying(25)  |           |          | 
+ order_id | integer                |           |          | 
 Indexes:
     "clients_pkey" PRIMARY KEY, btree (id)
     "clients_country_idx" btree (country)
+Foreign-key constraints:
+    "clients_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
 ```
 
 - список пользователей с правами над таблицами БД test_db:
@@ -274,6 +276,35 @@ test_db=# select count(*) from clients;
 Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод этого запроса.
  
 Подсказка: используйте директиву `UPDATE`.
+
+#### Ответ на задание 4.
+
+- запросы на выполнение операций:
+```SQL
+test_db=# update clients set order_id=3 where surname='Иванов Иван Иванович';
+test_db=# update clients set order_id=4 where surname='Петров Петр Петрович';
+test_db=# update clients set order_id=5 where surname='Иоганн Себастьян Бах';
+
+test_db=# select * from clients;
+ id |       surname        | country | order_id 
+----+----------------------+---------+----------
+  4 | Ронни Джеймс Дио     | Russia  |         
+  5 | Ritchie Blackmore    | Russia  |         
+  1 | Иванов Иван Иванович | USA     |        3
+  2 | Петров Петр Петрович | Canada  |        4
+  3 | Иоганн Себастьян Бах | Japan   |        5
+(5 rows)
+
+
+test_db=# select clients.surname, orders.name from clients join orders on orders.id=clients.order_id;
+       surname        |  name   
+----------------------+---------
+ Иванов Иван Иванович | Книга
+ Петров Петр Петрович | Монитор
+ Иоганн Себастьян Бах | Гитара
+```
+
+
 
 ## Задача 5
 
