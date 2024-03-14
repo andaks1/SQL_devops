@@ -92,6 +92,25 @@ drwx------ 2 logstash systemd-journal  4096 Mar 13 20:00 pg_xact
 - SQL-запрос для выдачи списка пользователей с правами над таблицами test_db;
 - список пользователей с правами над таблицами test_db.
 
+#### Ответ на задание 2.
+
+- Итоговый список БД:
+```SQL
+andaks=# \l
+                                             List of databases
+   Name    | Owner  | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider | Access privileges 
+-----------+--------+----------+------------+------------+------------+-----------------+-------------------
+ andaks    | andaks | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | 
+ postgres  | andaks | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | 
+ template0 | andaks | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/andaks        +
+           |        |          |            |            |            |                 | andaks=CTc/andaks
+ template1 | andaks | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/andaks        +
+           |        |          |            |            |            |                 | andaks=CTc/andaks
+ test_db   | andaks | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | 
+(5 rows)
+```
+
+
 ## Задача 3
 
 Используя SQL-синтаксис, наполните таблицы следующими тестовыми данными:
